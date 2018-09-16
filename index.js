@@ -1,7 +1,7 @@
 // import config from './config';
 
-const width = 600;
-const height = 600;
+let width = window.innerWidth;
+let height = window.innerHeight;
 
 let spread = 0.2;
 let thickness = 15;
@@ -9,14 +9,17 @@ let thickness = 15;
 const startAngle = -90;
 const endAngle = startAngle + 360;
 
-const hWidth = width / 3;
-const hHeight = hWidth;
+let hWidth;
+let hHeight;
+let hLength;
 
-let mWidth = hWidth + hWidth * spread;
-let mHeight = hHeight + hHeight * spread;
+let mWidth;
+let mHeight;
+let mLength;
 
-let sWidth = hWidth + hWidth * spread + hWidth * spread;
-let sHeight = hHeight + hHeight * spread + hHeight * spread;
+let sWidth;
+let sHeight;
+let sLength;
 
 let initialHour;
 let initialMinute;
@@ -26,11 +29,25 @@ let ms;
 let sliderSpread;
 let sliderThickness;
 
-function preload() {}
+function adjustSize() {
+	hWidth = width / 3;
+	hHeight = hWidth;
+	hLength = hWidth / 7;
+
+	mWidth = hWidth + hWidth * spread;
+	mHeight = hHeight + hHeight * spread;
+	mLength = mWidth / 5;
+
+	sWidth = hWidth + hWidth * spread + hWidth * spread;
+	sHeight = hHeight + hHeight * spread + hHeight * spread;
+	sLength = sWidth / 4;
+}
 
 function setup() {
-	sliderSpread = createSlider(0.1, 0.8, 0.1, 0.1);
-	sliderThickness = createSlider(2, 20, 8, 1);
+	adjustSize();
+	sliderSpread = createSlider(0.1, 0.5, 0.2, 0.01);
+	sliderThickness = createSlider(2, 25, 20, 1);
+	sliderSpread.changed(adjustSize);
 
 	sliderSpread.position(20, 20);
 	sliderThickness.position(20, 40);
@@ -39,6 +56,15 @@ function setup() {
 	initialHour = hour();
 	initialMinute = minute();
 	initialSecond = second();
+}
+
+function windowResized() {
+	adjustSize();
+	let w = window.innerWidth;
+	let h = window.innerHeight;
+	resizeCanvas(w, h);
+	width = w;
+	height = h;
 }
 
 function draw() {
@@ -71,7 +97,7 @@ function draw() {
 	push();
 	translate(width / 2, height / 2);
 	rotate(hr - startAngle);
-	line(0, 0, 0, -30);
+	line(0, 0, 0, -hLength);
 	pop();
 
 	stroke(63, 81, 181);
@@ -79,7 +105,7 @@ function draw() {
 	push();
 	translate(width / 2, height / 2);
 	rotate(mn - startAngle);
-	line(0, 0, 0, -50);
+	line(0, 0, 0, -mLength);
 	pop();
 
 	stroke(255, 87, 34);
@@ -87,7 +113,7 @@ function draw() {
 	push();
 	translate(width / 2, height / 2);
 	rotate(sc - startAngle);
-	line(0, 0, 0, -70);
+	line(0, 0, 0, -sLength);
 	pop();
 
 	stroke(255);
