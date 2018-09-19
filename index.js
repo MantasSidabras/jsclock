@@ -30,8 +30,8 @@ let sliderSpread;
 let sliderThickness;
 
 function adjustSize() {
-	hWidth = width / 3;
-	hHeight = hWidth;
+	hHeight = height / 3;
+	hWidth = hHeight;
 	hLength = hWidth / 7;
 
 	mWidth = hWidth + hWidth * spread;
